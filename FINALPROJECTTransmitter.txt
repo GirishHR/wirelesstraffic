@@ -1,0 +1,80 @@
+ #include<VirtualWire.h>
+const int kPinBtn = A0;  // Push-Button connected to Analog pin A0
+const int kPinLED = 13;  // LED connected to to Digital Pin 13
+const int kPinBtn1 = A1;
+const int kPinBtn2= A2;
+const int kPinBtn3= A3;
+void setup()
+{
+  
+   vw_set_ptt_inverted(true);
+   vw_setup(2000);               
+  vw_set_tx_pin(13);
+    
+  pinMode(kPinBtn, OUTPUT); // Generally, in push-button we take INPUT as a parameter but here we take OUTPUT because ANALOG PIN 
+ 
+  digitalWrite(kPinBtn, HIGH); // Make button condition HIGH
+ pinMode(kPinBtn1, OUTPUT); // Generally, in push-button we take INPUT as a parameter but here we take OUTPUT because ANALOG PIN 
+
+  digitalWrite(kPinBtn1, HIGH); // Make button condition HIGH
+   pinMode(kPinBtn2, OUTPUT); // Generally, in push-button we take INPUT as a parameter but here we take OUTPUT because ANALOG PIN 
+
+  digitalWrite(kPinBtn2, HIGH); // Make button condition HIGH
+   pinMode(kPinBtn3, OUTPUT); // Generally, in push-button we take INPUT as a parameter but here we take OUTPUT because ANALOG PIN 
+
+  digitalWrite(kPinBtn3, HIGH); // Make button condition HIGH
+  pinMode(kPinLED, OUTPUT);
+}
+
+void loop()
+{
+  // Now, normal push-button operation, LED blink when we press push button
+
+  if(digitalRead(kPinBtn) == LOW)  // If button pressed
+  {
+           digitalWrite(kPinLED, HIGH);   // Blink LED
+
+      rfSend("1");
+  }
+  else {
+    digitalWrite(kPinLED, LOW); // Else LED is off
+  }
+    if(digitalRead(kPinBtn1) == LOW)  // If button pressed
+  {
+      
+       digitalWrite(kPinLED, HIGH);   // Blink LED
+       rfSend("2");
+  }
+  else {
+    digitalWrite(kPinLED, LOW); // Else LED is off
+  }
+    if(digitalRead(kPinBtn2) == LOW)  // If button pressed
+  {
+      
+       digitalWrite(kPinLED, HIGH);   // Blink LED
+  
+  rfSend("3");}
+  else {
+    digitalWrite(kPinLED, LOW); // Else LED is off
+  }
+    if(digitalRead(kPinBtn3) == LOW)  // If button pressed
+  {
+      
+       digitalWrite(kPinLED, HIGH);   // Blink LED
+       rfSend("4");
+  }
+  else {
+    digitalWrite(kPinLED, LOW); // Else LED is off
+  }
+}
+void rfSend(String message)
+{
+  char output[100];
+
+  message.toCharArray(output, 99);
+
+  vw_setup(2000);
+  vw_send((uint8_t *)output, strlen(output));
+  vw_wait_tx();
+  vw_setup(40);
+}
